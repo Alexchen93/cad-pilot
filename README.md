@@ -34,3 +34,7 @@ http://127.0.0.1:8088/
 - Add DXF import/export.
 - Add pan/zoom and object snaps.
 - Add text, hatch, blocks, offset, trim, extend, and layer manager.
+
+## Development Notes
+
+- Current architecture notes live in `docs/ARCHITECTURE.md`.
