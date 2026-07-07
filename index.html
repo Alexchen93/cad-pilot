@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CadPilot</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <nav class="menu-bar" aria-label="Application menu" data-i18n-aria-label="applicationMenu">
+          <details class="file-menu">
+            <summary data-i18n="file">File</summary>
+            <div class="file-menu-panel">
+              <button type="button" data-action="import-svg" data-i18n="importSvg">Import SVG</button>
+              <button type="button" data-action="export-svg" data-i18n="exportSvg">Export SVG</button>
+            </div>
+          </details>
+          <input id="svg-import-input" type="file" accept=".svg,image/svg+xml" hidden />
+        </nav>
+        <div class="brand">
+          <span class="brand-mark">CP</span>
+          <div>
+            <h1>CadPilot</h1>
+            <p data-i18n="tagline">AutoCAD-style drafting prototype</p>
+          </div>
+        </div>
+        <label class="language-select">
+          <span data-i18n="language">Language</span>
+          <select id="language-select" aria-label="Language" data-i18n-aria-label="language">
+            <option value="zh-Hant">中文</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+        <div class="status-strip">
+          <span id="active-tool">LINE</span>
+          <span id="cursor-readout">X 0.00 / Y 0.00</span>
+          <span id="snap-state">SNAP ON</span>
+        </div>
+      </header>
+
+      <aside class="ribbon" aria-label="Drawing tools" data-i18n-aria-label="drawingTools">
+        <button data-tool="select" title="Select" data-i18n-title="select">SEL</button>
+        <button data-tool="line" title="Line" data-i18n-title="line">LINE</button>
+        <button data-tool="polyline" title="Polyline" data-i18n-title="polyline">PL</button>
+        <button data-tool="rect" title="Rectangle" data-i18n-title="rectangle">RECT</button>
+        <button data-tool="circle" title="Circle" data-i18n-title="circle">CIR</button>
+        <button data-tool="dimension" title="Dimension" data-i18n-title="dimension">DIM</button>
+      </aside>
+
+      <main class="workspace">
+        <section class="canvas-shell">
+          <svg id="drawing" viewBox="0 0 1600 900" role="img" aria-label="CAD drawing canvas" data-i18n-aria-label="canvas">
+            <defs>
+              <pattern id="minor-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" class="minor-grid-line" />
+              </pattern>
+              <pattern id="major-grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                <rect width="100" height="100" fill="url(#minor-grid)" />
+                <path d="M 100 0 L 0 0 0 100" class="major-grid-line" />
+              </pattern>
+            </defs>
+            <rect width="1600" height="900" fill="url(#major-grid)" />
+            <g id="entities"></g>
+            <g id="preview"></g>
+            <g id="selection"></g>
+          </svg>
+          <div id="dynamic-input" class="dynamic-input" hidden></div>
+        </section>
+
+        <aside class="properties">
+          <section>
+            <h2 data-i18n="layers">Layers</h2>
+            <label>
+              <span data-i18n="currentLayer">Current layer</span>
+              <select id="layer-select">
+                <option value="0">0</option>
+                <option value="A-WALL">A-WALL</option>
+                <option value="A-DOOR">A-DOOR</option>
+                <option value="E-LIGHT">E-LIGHT</option>
+                <option value="M-PIPE">M-PIPE</option>
+                <option value="DIM">DIM</option>
+              </select>
+            </label>
+          </section>
+          <section>
+            <h2 data-i18n="draftingAids">Drafting Aids</h2>
+            <label class="switch"><input id="snap-toggle" type="checkbox" checked /> <span data-i18n="snap">Snap</span></label>
+            <label class="switch"><input id="ortho-toggle" type="checkbox" /> <span data-i18n="ortho">Ortho</span></label>
+            <label>
+              <span data-i18n="snapSpacing">Snap spacing</span>
+              <input id="snap-size" type="number" min="5" max="100" step="5" value="20" />
+            </label>
+          </section>
+          <section>
+            <h2 data-i18n="selection">Selection</h2>
+            <p id="selection-info">No entity selected.</p>
+            <div class="action-grid">
+              <button type="button" data-action="copy" data-i18n="copy">Copy</button>
+              <button type="button" data-action="move" data-i18n="move">Move</button>
+              <button type="button" data-action="erase" data-i18n="erase">Erase</button>
+              <button type="button" data-action="undo" data-i18n="undo">Undo</button>
+            </div>
+          </section>
+          <section>
+            <h2 data-i18n="commands">Commands</h2>
+            <p>LINE, PLINE, RECT, CIRCLE, DIM, COPY, MOVE, ERASE, UNDO, IMPORTSVG, EXPORTSVG, CLEAR</p>
+          </section>
+        </aside>
+      </main>
+
+      <footer class="command-line">
+        <div id="command-history" aria-live="polite"></div>
+        <form id="command-form">
+          <span data-i18n="commandLabel">Command:</span>
+          <input id="command-input" autocomplete="off" spellcheck="false" placeholder="Type LINE, RECT, CIRCLE, DIM, IMPORTSVG, EXPORTSVG..." data-i18n-placeholder="commandPlaceholder" />
+        </form>
+      </footer>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

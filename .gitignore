@@ -1,0 +1,19 @@
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Local/runtime files
+PROJECT_STATUS.md
+*.log
+*.tmp
+*.bak
+.env
+.env.*
+
+# Dependencies/build output, if this prototype later grows into a bundled app
+node_modules/
+dist/
+build/
+coverage/
